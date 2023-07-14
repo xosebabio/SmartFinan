@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">SmartFinan</string>
+    <string name="amount">Importe</string>
+    <string name="description">Descripción</string>
+    <string name="category">Categoría</string>
+    <string name="subcategory">Subcategoría</string>
+    <string name="date">Fecha</string>
+</resources>
