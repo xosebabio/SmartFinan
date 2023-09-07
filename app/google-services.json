@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "117722503031",
+    "project_id": "smartfinan-16db8",
+    "storage_bucket": "smartfinan-16db8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:117722503031:android:fa7e2a144070db7246b372",
+        "android_client_info": {
+          "package_name": "com.xbs.smartfinan"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "117722503031-doat1dh480jg6d5r8khpjpivucvradth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyeNwD3Toek3H7sfw4PNX_IJDBm5v9V58"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "117722503031-doat1dh480jg6d5r8khpjpivucvradth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

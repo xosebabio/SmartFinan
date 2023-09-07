@@ -5,4 +5,9 @@
     <string name="category">Categoría</string>
     <string name="subcategory">Subcategoría</string>
     <string name="date">Fecha</string>
+    <string name="home">Inicio</string>
+    <string name="spend">Gastos</string>
+    <string name="profile">Perfil</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
