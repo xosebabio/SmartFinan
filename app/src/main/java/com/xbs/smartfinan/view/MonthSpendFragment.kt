@@ -144,7 +144,7 @@ class MonthSpendFragment : Fragment(), OnClickListener {
 
     private fun saveSpend(dialog: Dialog, spends: MutableList<Spend>) {
         val spend: Spend = Spend(
-            0,
+            "0",
             dialog.findViewById<EditText>(R.id.edtAmount).text.toString().toDouble(),
             dialog.findViewById<EditText>(R.id.edtDescription).text.toString(),
             Regularity.valueOf(dialog.findViewById<Spinner>(R.id.spnRegularity).selectedItem.toString()),
@@ -155,6 +155,7 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         )
         db.addSpend(spend)
         spends.add(spend)
+        adapter.notifyDataSetChanged()
     }
 
     override fun onClick(spend: Spend, position: Int) {

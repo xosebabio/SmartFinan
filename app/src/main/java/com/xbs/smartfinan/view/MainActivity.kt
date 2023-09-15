@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.xbs.smartfinan.R
 import com.xbs.smartfinan.databinding.ActivityMainBinding
 
@@ -63,6 +64,22 @@ class MainActivity : AppCompatActivity() {
 
                 else -> false
             }
+        }
+    }
+
+    companion object {
+        fun renderFragment(fragment: Fragment, supportFragmentManager: FragmentManager) {
+            val fragmentManager: FragmentManager = supportFragmentManager
+            val fragmentTransaction: FragmentTransaction = fragmentManager.beginTransaction()
+
+            // Reemplazar el contenido del contenedor con el nuevo fragmento
+            fragmentTransaction.replace(R.id.hostFragment, fragment)
+
+            // Agregar la transacción a la pila de retroceso
+            fragmentTransaction.addToBackStack(null)
+
+            // Confirmar la transacción
+            fragmentTransaction.commit()
         }
     }
 }

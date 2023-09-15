@@ -19,7 +19,7 @@ enum class Category(val value: String) {
 }
 
 data class Spend(
-    val spend_id: Long,
+    var spend_id: String,
     val amount: Double,
     val description: String,
     val regularity: Regularity,
@@ -31,7 +31,7 @@ data class Spend(
     companion object {
         fun fromFirestore(documentSnapshot: DocumentSnapshot): Spend {
             val data = documentSnapshot.data
-            val spend_id = data?.get("spend_id") as Long
+            val spend_id = data?.get("spend_id") as String
             val amount = data?.get("amount") as Double
             val description = data?.get("description") as String
             val regularity = Regularity.valueOf(data?.get("regularity").toString())

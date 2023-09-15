@@ -14,6 +14,9 @@ class db {
         db.collection("spends")
             .add(spend)
             .addOnSuccessListener { documentReference ->
+                val newId = documentReference.id
+                spend.spend_id = newId
+                spendRef.document(newId).set(spend)
                 println("DocumentSnapshot added with ID: ${documentReference.id}")
             }
             .addOnFailureListener { e ->
@@ -36,4 +39,17 @@ class db {
             }
         return spends
     }
+
+    fun deleteSpend(spend: Spend) {
+        spendRef
+            .document(spend.spend_id.toString())
+            .delete()
+            .addOnSuccessListener {
+                println("DocumentSnapshot successfully deleted!")
+            }
+            .addOnFailureListener { e ->
+                println("Error deleting document: $e")
+            }
+    }
+
 }
