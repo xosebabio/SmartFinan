@@ -1,0 +1,97 @@
+<!-- res/layout/add_expense_dialog.xml -->
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="@dimen/common_padding_default">
+
+    <!-- Campo para el importe -->
+    <EditText
+        android:id="@+id/edtAmount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Importe"
+        android:inputType="numberDecimal"
+        />
+
+    <!-- Campo para la descripción -->
+    <EditText
+        android:id="@+id/edtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Descripción"
+        android:inputType="textMultiLine"
+        android:minLines="3"
+        android:maxLines="3"/>
+
+    <!-- Campo para la regularidad -->
+    <Spinner
+        android:id="@+id/spnRegularity"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:prompt="@string/select_regularity"
+        android:layout_marginTop="@dimen/common_padding_min"/>
+
+    <!-- Campo para la categoría -->
+    <Spinner
+        android:id="@+id/spnCategory"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:prompt="@string/select_category"
+        android:layout_marginTop="@dimen/common_padding_min"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Fecha"
+        android:layout_marginTop="@dimen/common_padding_min">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:clickable="true"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/btnDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleccionar Fecha" />
+
+    <!-- Campo para la subcategoría -->
+    <EditText
+        android:id="@+id/edtSubcategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Subcategoría" />
+
+    <!-- Botón para guardar el gasto -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnSaveSpend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Guardar"
+        android:layout_gravity="center"
+        />
+</LinearLayout>
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_cross"
+        android:backgroundTint="@color/colorDivider" />
+
+</FrameLayout>

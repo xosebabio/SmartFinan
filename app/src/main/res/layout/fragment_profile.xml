@@ -1,14 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ProfileFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp"
+    android:background="@color/colorBackground">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- Fondo circular con borde morado -->
+    <FrameLayout
+        android:id="@+id/profileImageViewContainer"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/circular_shape"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="@dimen/border_profile_img">
+
+        <!-- Imagen de perfil -->
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/albentosa"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circular_border"
+            android:clipToOutline="true"/>
+    </FrameLayout>
+
+    <!-- Nombre de usuario -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/usernameTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profileImageViewContainer"
+        android:layout_centerHorizontal="true"
+        android:text="Raúl Albentosa"
+        android:textSize="24sp"
+        android:layout_marginTop="16dp"/>
 
-</FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@+id/usernameTextView">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/common_padding_min">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lista de Ingresos mensuales"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Botón 1 -->
+        <Button
+            android:id="@+id/btnEditProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Editar Perfil" />
+
+        <!-- Botón 2 -->
+        <Button
+            android:id="@+id/btnEditIncomes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Editar Ingresos Mensuales" />
+
+        <!-- Botón 3 -->
+        <Button
+            android:id="@+id/btnChangeUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cambiar de Usuario" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
