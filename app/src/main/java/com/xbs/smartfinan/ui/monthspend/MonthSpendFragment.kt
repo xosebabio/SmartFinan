@@ -1,4 +1,4 @@
-package com.xbs.smartfinan.view
+package com.xbs.smartfinan.ui.monthspend
 
 import android.app.Dialog
 import android.content.Context
@@ -17,7 +17,11 @@ import com.google.android.material.textfield.TextInputEditText
 import com.xbs.smartfinan.R
 import com.xbs.smartfinan.data.SpendApplication
 import com.xbs.smartfinan.databinding.FragmentMonthSpendBinding
-import com.xbs.smartfinan.databinding.ItemSpendBinding
+import com.xbs.smartfinan.data.Category
+import com.xbs.smartfinan.domain.OnClickListener
+import com.xbs.smartfinan.data.Regularity
+import com.xbs.smartfinan.data.Spend
+import com.xbs.smartfinan.domain.SpendAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -52,12 +56,6 @@ class MonthSpendFragment : Fragment(), OnClickListener {
             showAddSpendDialog(spends)
         }
 
-        mBinding.tvMonth.text = getActualMonthName()
-        if (spends.isEmpty()) {
-            mBinding.tvMonthSpend.text = "No hay gastos"
-        } else {
-            mBinding.tvMonthSpend.text = "Gastos del mes: ${spends.sumOf { it.amount }}"
-        }
         initRecyclerView()
         return mBinding.root
     }
@@ -77,10 +75,9 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         mLayoutManager = LinearLayoutManager(mContext)
         mBinding.rvMonthSpend.layoutManager = mLayoutManager
         mBinding.rvMonthSpend.adapter = adapter
-    }
 
-    private fun OnItemSelected(spend: Any) {
-
+        mBinding.tvMonth.text = getActualMonthName()
+        updateTotalSpends(spends)
     }
 
     private fun showAddSpendDialog(spends: MutableList<Spend>) {
@@ -174,11 +171,11 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         TODO("Not yet implemented")
     }
 
-    inner class SpendHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val binding = ItemSpendBinding.bind(view)
-
-        fun setListener(spend: Spend) {
-            // Implementar la lógica para manejar clics en elementos del RecyclerView si es necesario
+    private fun updateTotalSpends(spends: MutableList<Spend>) {
+        if (spends.isEmpty()) {
+            mBinding.tvMonthSpend.text = "No hay gastos"
+        } else {
+            mBinding.tvMonthSpend.text = "Gastos del mes: ${spends.sumOf { it.amount }}"
         }
     }
 }

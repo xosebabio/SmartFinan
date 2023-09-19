@@ -1,4 +1,4 @@
-package com.xbs.smartfinan.view
+package com.xbs.smartfinan.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +7,9 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.xbs.smartfinan.R
 import com.xbs.smartfinan.databinding.ActivityMainBinding
+import com.xbs.smartfinan.ui.home.MainScreenFragment
+import com.xbs.smartfinan.ui.monthspend.MonthSpendFragment
+import com.xbs.smartfinan.ui.profile.ProfileFragment
 
 class MainActivity : AppCompatActivity() {
 

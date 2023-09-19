@@ -1,11 +1,11 @@
-package com.xbs.smartfinan.view
+package com.xbs.smartfinan.ui.spenddetail
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.xbs.smartfinan.data.Spend
 import com.xbs.smartfinan.databinding.FragmentSpendDetailBinding
 import java.text.SimpleDateFormat
 import java.util.Locale

@@ -1,9 +1,10 @@
-package com.xbs.smartfinan.view
+package com.xbs.smartfinan.domain
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.xbs.smartfinan.R
+import com.xbs.smartfinan.data.Spend
 
 class SpendAdapter(
     private var spendList: MutableList<Spend>

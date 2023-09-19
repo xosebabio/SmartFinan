@@ -1,4 +1,4 @@
-package com.xbs.smartfinan.view
+package com.xbs.smartfinan.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater

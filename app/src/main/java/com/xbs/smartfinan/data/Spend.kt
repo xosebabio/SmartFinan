@@ -1,10 +1,8 @@
-package com.xbs.smartfinan.view
+package com.xbs.smartfinan.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.text.SimpleDateFormat
-import java.util.Date
-
 
 
 val dateFormat = SimpleDateFormat("yyyy-MM-dd")

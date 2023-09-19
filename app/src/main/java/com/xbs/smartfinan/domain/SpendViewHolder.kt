@@ -1,8 +1,9 @@
-package com.xbs.smartfinan.view
+package com.xbs.smartfinan.domain
 
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.xbs.smartfinan.data.Spend
 import com.xbs.smartfinan.databinding.ItemSpendBinding
 
 class SpendViewHolder(view: View): RecyclerView.ViewHolder(view) {

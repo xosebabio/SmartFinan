@@ -8,13 +8,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.MonthSpendFragment">
+        tools:context=".ui.monthspend.MonthSpendFragment">
 
         <LinearLayout
             android:id="@+id/header_month_spend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/purple_200"
+            android:background="#536070"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -101,6 +101,15 @@
 
         </LinearLayout>
 
+        <View
+            android:id="@+id/separator_month_spend"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#55555555"
+            android:layout_marginTop="@dimen/common_padding_min"
+            android:layout_gravity="bottom"
+            app:layout_constraintTop_toBottomOf="@+id/spend_header"/>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvMonthSpend"
@@ -108,7 +117,7 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spend_header" />
+            app:layout_constraintTop_toBottomOf="@+id/separator_month_spend" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
