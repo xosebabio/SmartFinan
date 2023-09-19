@@ -3,8 +3,6 @@ package com.xbs.smartfinan.view
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.xbs.smartfinan.R
 
 class SpendAdapter(

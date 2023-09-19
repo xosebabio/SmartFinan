@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.xbs.smartfinan.R
-import com.xbs.smartfinan.data.db
 import com.xbs.smartfinan.databinding.FragmentSpendDetailBinding
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -15,7 +13,6 @@ import java.util.Locale
 class SpendDetailFragment(private val spend: Spend) : Fragment() {
 
     private var _binding: FragmentSpendDetailBinding? = null
-    private val db = db()
     private val mBinding get() = _binding!!
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
 
@@ -30,7 +27,7 @@ class SpendDetailFragment(private val spend: Spend) : Fragment() {
         mBinding.tvDate.text = dateFormat.format(spend.dateAt)
         mBinding.tvCategory.text = spend.category.toString()
         mBinding.tvSubcategory.text = spend.subcategory
-        mBinding.btnDelete.setOnClickListener { db.deleteSpend(spend)}
+        //mBinding.btnDelete.setOnClickListener { db.deleteSpend(spend)}
         return mBinding.root
     }
 

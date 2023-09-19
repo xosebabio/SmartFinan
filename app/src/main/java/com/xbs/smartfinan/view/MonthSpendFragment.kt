@@ -10,26 +10,20 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.firebase.ui.database.FirebaseRecyclerAdapter
-import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
 import com.xbs.smartfinan.R
-import com.xbs.smartfinan.data.db
+import com.xbs.smartfinan.data.SpendApplication
 import com.xbs.smartfinan.databinding.FragmentMonthSpendBinding
 import com.xbs.smartfinan.databinding.ItemSpendBinding
-import kotlinx.coroutines.NonDisposableHandle.parent
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MonthSpendFragment : Fragment(), OnClickListener {
 
     private var _binding: FragmentMonthSpendBinding? = null
-    private val db = db()
     private val mBinding get() = _binding!!
 
     private lateinit var editTextDate: TextInputEditText
@@ -46,7 +40,11 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMonthSpendBinding.inflate(inflater, container, false)
-        spends = db.getSpend()
+        spends = mutableListOf()
+
+        Thread {
+            spends = SpendApplication.database.spendDao().getAllSpends()
+        }.start()
 
         mContext = requireContext()
 
@@ -55,9 +53,21 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         }
 
         mBinding.tvMonth.text = getActualMonthName()
-        mBinding.tvMonthSpend.text = if (spends.isEmpty()) "No hay gastos" else "Gastos totales:"
+        if (spends.isEmpty()) {
+            mBinding.tvMonthSpend.text = "No hay gastos"
+        } else {
+            mBinding.tvMonthSpend.text = "Gastos del mes: ${spends.sumOf { it.amount }}"
+        }
         initRecyclerView()
         return mBinding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Thread {
+            spends = SpendApplication.database.spendDao().getAllSpends()
+        }.start()
+        initRecyclerView()
     }
 
     private fun initRecyclerView() {
@@ -144,16 +154,18 @@ class MonthSpendFragment : Fragment(), OnClickListener {
 
     private fun saveSpend(dialog: Dialog, spends: MutableList<Spend>) {
         val spend: Spend = Spend(
-            "0",
+            0,
             dialog.findViewById<EditText>(R.id.edtAmount).text.toString().toDouble(),
             dialog.findViewById<EditText>(R.id.edtDescription).text.toString(),
             Regularity.valueOf(dialog.findViewById<Spinner>(R.id.spnRegularity).selectedItem.toString()),
             Category.valueOf(dialog.findViewById<Spinner>(R.id.spnCategory).selectedItem.toString()),
-            dateFormat.parse(dialog.findViewById<TextInputEditText>(R.id.etDate).text.toString()),
+            dialog.findViewById<TextInputEditText>(R.id.etDate).text.toString(),
             dialog.findViewById<EditText>(R.id.edtSubcategory).text.toString(),
             0
         )
-        db.addSpend(spend)
+        Thread {
+            SpendApplication.database.spendDao().addSpend(spend)
+        }.start()
         spends.add(spend)
         adapter.notifyDataSetChanged()
     }
