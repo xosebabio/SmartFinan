@@ -19,4 +19,7 @@
     <string name="spend_date">Fecha del gasto</string>
     <string name="edit_spend">Editar Gasto</string>
     <string name="delete_spend">Eliminar Gasto</string>
+    <string name="monthly_income">Ingreso mensual:</string>
+    <string name="yearly_income">Ingreso anual:</string>
+    <string name="pay_day">Día de cobro:</string>
 </resources>

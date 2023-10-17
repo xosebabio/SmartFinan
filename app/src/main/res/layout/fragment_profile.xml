@@ -23,7 +23,7 @@
             android:id="@+id/profileImageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/albentosa"
+            android:src="@drawable/ic_person"
             android:scaleType="centerCrop"
             android:background="@drawable/circular_border"
             android:clipToOutline="true"/>
@@ -38,7 +38,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/profileImageViewContainer"
         android:layout_centerHorizontal="true"
-        android:text="Raúl Albentosa"
+        android:text="Nombre Apellidos"
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         android:textSize="24sp"
         android:layout_marginTop="16dp"/>
 
@@ -59,8 +60,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Lista de Ingresos mensuales"/>
+                android:text="Ingresos mensuales"
+                android:textAppearance="@style/TextAppearance.Material3.TitleMedium"/>
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/incomesRecyclerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             </LinearLayout>
@@ -71,6 +74,7 @@
             android:id="@+id/btnEditProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
             android:text="Editar Perfil" />
 
         <!-- Botón 2 -->
@@ -78,14 +82,14 @@
             android:id="@+id/btnEditIncomes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
             android:text="Editar Ingresos Mensuales" />
 
-        <!-- Botón 3 -->
         <Button
-            android:id="@+id/btnChangeUser"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cambiar de Usuario" />
+            android:backgroundTint="@color/design_default_color_error"
+            android:text="Borrar todos los datos" />
 
     </LinearLayout>
 

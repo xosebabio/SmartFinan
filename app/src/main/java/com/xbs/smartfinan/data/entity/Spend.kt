@@ -1,21 +1,10 @@
-package com.xbs.smartfinan.data
+package com.xbs.smartfinan.data.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.text.SimpleDateFormat
-
-
-val dateFormat = SimpleDateFormat("yyyy-MM-dd")
-enum class Regularity(val value: String) {
-    ONCE("once"),
-    WEEKLY("weekly"),
-    MONTHLY("monthly"),
-    YEARLY("yearly")
-}
-enum class Category(val value: String) {
-    NECESSARY("necessary"),
-    UNNECESSARY("unnecessary"),
-}
+import com.xbs.smartfinan.domain.Category
+import com.xbs.smartfinan.domain.Regularity
+import java.util.Date
 
 @Entity(tableName = "Spend")
 data class Spend(

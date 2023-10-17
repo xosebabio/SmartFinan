@@ -21,14 +21,41 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tvMonth"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/llMonthSpent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:text="JULIO"
-                android:textColor="@color/white"
-                android:textSize="24sp" />
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBackMonth"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_arrow_back"
+                    android:backgroundTint="#536070"
+                    android:layout_marginTop="@dimen/common_padding_default"/>
+
+                <TextView
+                    android:id="@+id/tvMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/common_padding_default"
+                    tools:text="JULIO"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNextMonth"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_arrow_forward"
+                    android:layout_marginTop="@dimen/common_padding_default"
+                    android:backgroundTint="#536070"/>
+            </LinearLayout>
+
+
+
 
             <LinearLayout
                 android:layout_width="match_parent"

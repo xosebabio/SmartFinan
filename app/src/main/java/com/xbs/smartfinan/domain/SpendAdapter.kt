@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.xbs.smartfinan.R
-import com.xbs.smartfinan.data.Spend
+import com.xbs.smartfinan.data.entity.Spend
 
 class SpendAdapter(
     private var spendList: MutableList<Spend>

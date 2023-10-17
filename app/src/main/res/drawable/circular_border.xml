@@ -7,13 +7,4 @@
             <solid android:color="#FFFFFF" /> <!-- Color de fondo blanco -->
         </shape>
     </item>
-    <!-- Borde morado -->
-    <item>
-        <shape
-            android:shape="oval">
-            <stroke
-                android:width="10dp"
-                android:color="#FF6200EA"/>
-        </shape>
-    </item>
 </layer-list>
