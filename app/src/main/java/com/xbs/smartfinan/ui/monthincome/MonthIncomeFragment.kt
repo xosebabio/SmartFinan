@@ -1,34 +1,29 @@
-package com.xbs.smartfinan.ui.monthspend
+package com.xbs.smartfinan.ui.monthincome
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xbs.smartfinan.R
 import com.xbs.smartfinan.data.database.SmartFinanApplication
-import com.xbs.smartfinan.databinding.FragmentMonthSpendBinding
-import com.xbs.smartfinan.domain.OnClickListener
-import com.xbs.smartfinan.data.entity.Spend
-import com.xbs.smartfinan.domain.SpendAdapter
+import com.xbs.smartfinan.data.entity.Income
+import com.xbs.smartfinan.databinding.FragmentMonthIncomeBinding
+import com.xbs.smartfinan.domain.IncomeAdapter
 import com.xbs.smartfinan.ui.income.IncomeActivity
-import com.xbs.smartfinan.ui.spend.SpendActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MonthSpendFragment : Fragment(), OnClickListener {
+class MonthIncomeFragment : Fragment() {
 
-    private var _binding: FragmentMonthSpendBinding? = null
+    private var _binding: FragmentMonthIncomeBinding? = null
     private val mBinding get() = _binding!!
 
     private lateinit var mContext: Context
-    private lateinit var spends: MutableList<Spend>
+    private lateinit var incomes: MutableList<Income>
     private lateinit var mLayoutManager: RecyclerView.LayoutManager
     private var currentMonth: Int = 0
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -38,30 +33,33 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMonthSpendBinding.inflate(inflater, container, false)
-        spends = mutableListOf()
+        _binding = FragmentMonthIncomeBinding.inflate(inflater, container, false)
+        incomes = mutableListOf()
         mContext = requireContext()
 
-        mBinding.fabAddSpend.setOnClickListener {
-            navigatetoNewSpend()
+        mBinding.fabAddIncome.setOnClickListener {
+            navigateToNewIncome()
         }
 
         currentMonth=getActualMonth()
 
         mBinding.btnBackMonth.setOnClickListener {
-            showMonthSpends(getPreviousMonth(currentMonth))
+            showMonthIncome(getPreviousMonth(currentMonth))
             currentMonth--
         }
 
         mBinding.btnNextMonth.setOnClickListener {
-            showMonthSpends(getNextMonth(currentMonth))
+            showMonthIncome(getNextMonth(currentMonth))
             currentMonth++
         }
 
         Thread {
-            spends = SmartFinanApplication.database.spendDao().getSpendsBetweenDates(firstDayOfMonth(currentMonth), lastDayOfMonth(currentMonth))
+            incomes = SmartFinanApplication.database.incomeDao().getIncomesByDate(firstDayOfMonth(currentMonth), lastDayOfMonth(currentMonth))
+            activity?.runOnUiThread {
+                initRecyclerView()
+            }
         }.start()
-        initRecyclerView()
+
         return mBinding.root
     }
 
@@ -72,17 +70,17 @@ class MonthSpendFragment : Fragment(), OnClickListener {
     }
 
     private fun initRecyclerView() {
-        val adapter = SpendAdapter(spends) { item ->
-            val intent = Intent(mContext, EditDeleteSpendActivity::class.java)
-            intent.putExtra("spend_id", item.spend_id)
+        val adapter = IncomeAdapter(incomes) { item ->
+            val intent = Intent(mContext, EditDeleteIncomeActivity::class.java)
+            intent.putExtra("income_id", item.income_id)
             startActivity(intent)
         }
         mLayoutManager = LinearLayoutManager(mContext)
-        mBinding.rvMonthSpend.layoutManager = mLayoutManager
-        mBinding.rvMonthSpend.adapter = adapter
+        mBinding.rvMonthIncome.layoutManager = mLayoutManager
+        mBinding.rvMonthIncome.adapter = adapter
 
         mBinding.tvMonth.text = getActualMonthName(currentMonth)
-        updateTotalSpends(spends)
+        updateTotalIncomes(incomes)
     }
 
 
@@ -105,20 +103,17 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         return month
     }
 
-    override fun onClick(spend: Spend, position: Int) {
-        TODO("Not yet implemented")
-    }
 
-    private fun updateTotalSpends(spends: MutableList<Spend>) {
-        if (spends.isEmpty()) {
-            mBinding.tvMonthSpend.text = "No hay gastos"
+    private fun updateTotalIncomes(incomes: MutableList<Income>) {
+        if (incomes.isEmpty()) {
+            mBinding.tvMonthIncome.text = "No hay ingresos"
         } else {
-            mBinding.tvMonthSpend.text = "Gastos del mes: ${spends.sumOf { it.amount }}"
+            mBinding.tvMonthIncome.text = "Ingresos del mes: ${incomes.sumOf { it.amount }}"
         }
     }
 
-    private fun navigatetoNewSpend() {
-        val intent = Intent(mContext, SpendActivity::class.java)
+    private fun navigateToNewIncome(){
+        val intent = Intent(mContext, IncomeActivity::class.java)
         startActivity(intent)
     }
 
@@ -135,13 +130,13 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
         return dateFormat.format(calendar.time)
     }
-    // Función para cargar los gastos de un mes específico
-    private fun showMonthSpends(month: Int) {
+
+    private fun showMonthIncome(month: Int) {
         val firstDay = firstDayOfMonth(month)
         val lastDay = lastDayOfMonth(month)
 
         Thread {
-            spends = SmartFinanApplication.database.spendDao().getSpendsBetweenDates(firstDay, lastDay)
+            incomes = SmartFinanApplication.database.incomeDao().getIncomesByDate(firstDay, lastDay)
             activity?.runOnUiThread {
                 initRecyclerView()
             }

@@ -58,6 +58,9 @@ dependencies {
 
     //Corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    
+
+    //charts
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
     kapt("androidx.room:room-compiler:$room_version")
 }

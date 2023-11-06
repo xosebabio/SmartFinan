@@ -26,7 +26,6 @@ class SpendDetailFragment(private val spend: Spend) : Fragment() {
         mBinding.tvAmount.text = spend.amount.toString()
         mBinding.tvDate.text = dateFormat.format(spend.dateAt)
         mBinding.tvCategory.text = spend.category.toString()
-        mBinding.tvSubcategory.text = spend.subcategory
         //mBinding.btnDelete.setOnClickListener { db.deleteSpend(spend)}
         return mBinding.root
     }

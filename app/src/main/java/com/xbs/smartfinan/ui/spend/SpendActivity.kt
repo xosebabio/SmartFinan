@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import com.google.android.material.datepicker.CalendarConstraints
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.xbs.smartfinan.data.database.SmartFinanApplication
 import com.xbs.smartfinan.data.entity.Spend
 import com.xbs.smartfinan.databinding.ActivitySpendBinding
@@ -16,7 +14,6 @@ import com.xbs.smartfinan.domain.Regularity
 import com.xbs.smartfinan.ui.MainActivity
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class SpendActivity : AppCompatActivity() {
@@ -54,8 +51,7 @@ class SpendActivity : AppCompatActivity() {
             Regularity.valueOf(mBinding.spnRegularity.selectedItem.toString()),
             Category.valueOf(mBinding.spnCategory.selectedItem.toString()),
             dateFormat.format(calendar.time),
-            mBinding.edtSubcategory.text.toString(),
-            0
+            false
         )
         Thread {
             SmartFinanApplication.database.spendDao().addSpend(spend)
@@ -94,8 +90,6 @@ class SpendActivity : AppCompatActivity() {
     private fun updateDateText() {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formattedDate = dateFormat.format(calendar.time)
-        // Aquí puedes hacer lo que necesites con la fecha en formato "yyyy-MM-dd"
-        // Por ejemplo, mostrarla en un TextView, almacenarla en una variable, etc.
         mBinding.etDate.setText(formattedDate)
     }
 

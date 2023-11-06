@@ -7,14 +7,16 @@ import com.xbs.smartfinan.R
 import com.xbs.smartfinan.data.entity.Spend
 
 class SpendAdapter(
-    private var spendList: MutableList<Spend>
+    private var spendList: MutableList<Spend>,
+    private val itemClickListener: (Spend) -> Unit
 ) : RecyclerView.Adapter<SpendViewHolder>() {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): SpendViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        return SpendViewHolder(layoutInflater.inflate(R.layout.item_spend, parent, false))
+        val view = layoutInflater.inflate(R.layout.item_spend, parent, false)
+        return SpendViewHolder(view, itemClickListener)
     }
 
     override fun getItemCount(): Int = spendList.size

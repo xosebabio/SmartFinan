@@ -35,13 +35,6 @@
         android:prompt="@string/select_regularity"
         android:layout_marginTop="@dimen/common_padding_min"/>
 
-    <!-- Campo para la categoría -->
-    <Spinner
-        android:id="@+id/spnCategory"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:prompt="@string/select_category"
-        android:layout_marginTop="@dimen/common_padding_min"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilDate"
@@ -74,16 +67,16 @@
         android:layout_gravity="center">
         <!-- Botón para guardar el gasto -->
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnSaveSpend"
+            android:id="@+id/btnUpdateIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:backgroundTint="@color/colorSucceed"
             android:layout_marginHorizontal="@dimen/common_padding_min"
-            android:text="Guardar" />
+            android:text="Actualizar" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnCancelSpend"
+            android:id="@+id/btnCancelIncome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -92,4 +85,12 @@
             android:text="Cancelar" />
 
     </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnDeleteIncome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminar Ingreso"
+        android:backgroundTint="@color/design_default_color_error"/>
+
 </LinearLayout>

@@ -14,7 +14,7 @@
         android:gravity="center"
         android:padding="@dimen/common_padding_middle">
         <TextView
-            android:id="@+id/tvSpendAmount"
+            android:id="@+id/tvIncomeAmount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -22,9 +22,9 @@
             android:layout_marginLeft="2dp"
             android:layout_margin="1dp"
             android:gravity="center"
-            android:textColor="@color/colorError"/>
+            android:textColor="#00B304"/>
         <TextView
-            android:id="@+id/tvSpendDescription"
+            android:id="@+id/tvIncomeDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -32,15 +32,7 @@
             android:layout_margin="1dp"
             android:gravity="center"/>
         <TextView
-            android:id="@+id/tvSpendCategory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            tools:text="Necesidad Primaria"
-            android:layout_margin="1dp"
-            android:gravity="center"/>
-        <TextView
-            android:id="@+id/tvSpendDate"
+            android:id="@+id/tvIncomeDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

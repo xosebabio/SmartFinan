@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.monthspend.MonthSpendFragment">
+
+        <LinearLayout
+            android:id="@+id/header_month_spend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#536070"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/llMonthSpent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnBackMonth"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_arrow_back"
+                    android:backgroundTint="#536070"
+                    android:layout_marginTop="@dimen/common_padding_default"/>
+
+                <TextView
+                    android:id="@+id/tvMonth"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/common_padding_default"
+                    tools:text="JULIO"
+                    android:textColor="@color/white"
+                    android:textSize="24sp" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnNextMonth"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_arrow_forward"
+                    android:layout_marginTop="@dimen/common_padding_default"
+                    android:backgroundTint="#536070"/>
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tvMonthIncome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="4dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorTextSecondary"
+                    tools:text="Este mes has ingresado: 1300€" />
+
+                <TextView
+                    android:id="@+id/tvMonthSpend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="6dp"
+                    android:textAlignment="center"
+                    android:textColor="@color/colorTextSecondary"
+                    tools:text="Este mes has gastado: 1300€" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/spend_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_month_spend">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/amount" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/description" />
+
+
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/date" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separator_month_spend"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#55555555"
+            android:layout_marginTop="@dimen/common_padding_min"
+            android:layout_gravity="bottom"
+            app:layout_constraintTop_toBottomOf="@+id/spend_header"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMonthIncome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separator_month_spend" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabAddIncome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="32dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/colorAccent"
+        app:tint="@color/white" />
+</FrameLayout>

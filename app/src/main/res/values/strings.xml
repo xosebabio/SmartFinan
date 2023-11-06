@@ -22,4 +22,5 @@
     <string name="monthly_income">Ingreso mensual:</string>
     <string name="yearly_income">Ingreso anual:</string>
     <string name="pay_day">Día de cobro:</string>
+    <string name="income">Ingresos</string>
 </resources>

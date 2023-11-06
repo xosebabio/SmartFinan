@@ -141,27 +141,27 @@ class MainScreenFragment : Fragment() {
     private fun calc(): String {
         val stringBuilder = StringBuilder()
 
-        if (totalNotImportantSpends > totalIncomes * 0.3) {
+        val importantSpendsPercentage = (totalImportantSpends / totalIncomes) * 100
+        val notImportantSpendsPercentage = (totalNotImportantSpends / totalIncomes) * 100
+        val monthImportantSpendsPercentage = (totalMonthImportantSpends / totalMonthIncomes) * 100
+        val monthNotImportantSpendsPercentage = (totalMonthNotImportantSpends / totalMonthIncomes) * 100
+        val monthSavingPercentage = ((totalMonthIncomes - totalMonthSpends) / totalMonthIncomes) * 100
+
+        if (notImportantSpendsPercentage > 30.0) {
             stringBuilder.append("Tienes demasiados gastos innecesarios. Este año te pasas en ${totalNotImportantSpends - (totalIncomes * 0.3)}€. ")
         }
-        if (totalImportantSpends > totalIncomes * 0.5) {
+        if (importantSpendsPercentage > 50.0) {
             stringBuilder.append("Tu nivel de vida es demasiado alto. Superas ${totalImportantSpends - (totalIncomes * 0.5)}€ en el estándar de ahorro recomendado durante este año. ")
         }
-        if (totalMonthNotImportantSpends > totalMonthIncomes * 0.3) {
+        if (monthNotImportantSpendsPercentage > 30.0) {
             stringBuilder.append("Este mes has superado en ${totalMonthNotImportantSpends - (totalMonthIncomes * 0.3)}€ los gastos innecesarios recomendados. ")
         }
-        if (totalMonthImportantSpends > totalMonthIncomes * 0.5) {
+        if (monthImportantSpendsPercentage > 50.0) {
             stringBuilder.append("Tus gastos importantes este mes superan en ${totalMonthImportantSpends - (totalMonthIncomes * 0.5)}€ a los recomendados, intenta reducirlos. ")
         }
 
-        val totalMonthSpends = totalMonthImportantSpends + totalMonthNotImportantSpends
-        val monthSaving = totalMonthIncomes - totalMonthSpends
-
-        if (totalMonthIncomes * 0.2 > monthSaving && monthSaving > 0) {
-            stringBuilder.append("Este mes has ahorrado ${monthSaving}€, esto supone ${totalMonthIncomes * 0.2 - monthSaving}€ menos de lo recomendado. ")
-        }
-        if (monthSaving < 0) {
-            stringBuilder.append("Este mes has gastado ${abs(monthSaving)}€ más de lo que has ingresado. ")
+        if (monthSavingPercentage < 20.0) {
+            stringBuilder.append("Este mes has ahorrado ${monthSavingPercentage}% de tus ingresos, lo cual es menos del 20% recomendado. Intenta aumentar tus ahorros. ")
         }
 
         val advise = stringBuilder.toString()
@@ -172,6 +172,7 @@ class MainScreenFragment : Fragment() {
 
         return advise
     }
+
 
 
     private fun getStartMonth(date: Date): String {

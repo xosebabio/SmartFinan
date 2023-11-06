@@ -15,7 +15,6 @@ data class Spend(
     val regularity: Regularity,
     val category: Category,
     val dateAt: String,
-    val subcategory: String,
-    val userId: Long
+    val checked: Boolean
 ) {
 }
