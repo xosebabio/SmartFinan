@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
             ?: MainScreenFragment()
         val monthSpendFragment = mFragmentManager.findFragmentByTag(MonthSpendFragment::class.java.name)
             ?: MonthSpendFragment()
-        val profileFragment = mFragmentManager.findFragmentByTag(ProfileFragment::class.java.name)
-            ?: ProfileFragment()
+        val chartFragment = mFragmentManager.findFragmentByTag(ChartFragment::class.java.name)
+            ?: ChartFragment()
         val monthIncomeFragment = mFragmentManager.findFragmentByTag(MonthIncomeFragment::class.java.name)
             ?: MonthIncomeFragment()
 
@@ -53,10 +53,10 @@ class MainActivity : AppCompatActivity() {
                 .hide(monthSpendFragment)
                 .commit()
         }
-        if (profileFragment.isAdded.not()) {
+        if (chartFragment.isAdded.not()) {
             mFragmentManager.beginTransaction()
-                .add(R.id.hostFragment, profileFragment, ChartFragment::class.java.name)
-                .hide(profileFragment)
+                .add(R.id.hostFragment, chartFragment, ChartFragment::class.java.name)
+                .hide(chartFragment)
                 .commit()
         }
         if (monthIncomeFragment.isAdded.not()) {
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.action_profile -> { // Cambia el ID al correcto
-                    showFragment(profileFragment)
+                    showFragment(chartFragment)
                     true
                 }
                 R.id.action_month_income -> {

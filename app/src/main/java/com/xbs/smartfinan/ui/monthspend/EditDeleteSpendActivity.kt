@@ -98,16 +98,16 @@ class EditDeleteSpendActivity : AppCompatActivity(), CoroutineScope {
         datePicker.show()
     }
 
-    private fun updateSpend(spend_id: Int) {
+    private fun updateSpend(spendId: Int) {
         // Construye un diálogo de confirmación
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Confirmación")
         builder.setMessage("¿Estás seguro de que deseas actualizar este gasto?")
         // Agrega un botón "Sí" para confirmar la eliminación
-        builder.setPositiveButton("Sí") { dialog, which ->
+        builder.setPositiveButton("Sí") { _, _ ->
             try {
                 val spend: Spend = Spend(
-                    spend_id,
+                    spendId,
                     mBinding.edtAmount.text.toString().toDouble(),
                     mBinding.edtDescription.text.toString(),
                     Regularity.valueOf(mBinding.spnRegularity.selectedItem.toString()),
@@ -128,7 +128,7 @@ class EditDeleteSpendActivity : AppCompatActivity(), CoroutineScope {
             }
         }
         // Agrega un botón "No" para cancelar la eliminación
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton("No") { dialog, _ ->
             // Cierre el diálogo y no realice la eliminación
             dialog.dismiss()
         }
@@ -142,7 +142,7 @@ class EditDeleteSpendActivity : AppCompatActivity(), CoroutineScope {
         builder.setTitle("Confirmación")
         builder.setMessage("¿Estás seguro de que deseas eliminar este gasto?")
         // Agrega un botón "Sí" para confirmar la eliminación
-        builder.setPositiveButton("Sí") { dialog, which ->
+        builder.setPositiveButton("Sí") { _, _ ->
             // Elimina el gasto
             launch(Dispatchers.IO) {
                 SmartFinanApplication.database.spendDao().deleteSpend(spend)
@@ -153,7 +153,7 @@ class EditDeleteSpendActivity : AppCompatActivity(), CoroutineScope {
             }
         }
         // Agrega un botón "No" para cancelar la eliminación
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton("No") { dialog, _ ->
             // Cierre el diálogo y no realice la eliminación
             dialog.dismiss()
         }

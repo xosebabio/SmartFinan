@@ -24,4 +24,9 @@
     <color name="colorDivider">#BDBDBD</color> <!-- Color de divisor: gris -->
     <color name="colorError">#F44336</color> <!-- Color de error: rojo -->
 
+    <color name="importantExpenseColor">#FF5733</color>
+    <color name="nonImportantExpenseColor">#33FF57</color>
+    <color name="savingsColor">#3366FF</color>
+
+
 </resources>

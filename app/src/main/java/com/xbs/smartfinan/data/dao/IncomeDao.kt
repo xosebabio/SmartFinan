@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Upsert
+import com.xbs.smartfinan.data.entity.ChartInfo
 import com.xbs.smartfinan.data.entity.Income
 
 @Dao
@@ -22,7 +23,10 @@ interface IncomeDao {
     @Query("SELECT * FROM Income where dateAt BETWEEN :from AND :at")
     fun getIncomesByDate(from: String, at: String): MutableList<Income>
 
-     @Query("SELECT * FROM Income where income_id = :id")
+    @Query("SELECT * FROM Income where income_id = :id")
     fun getIncomeById(id: Int): Income
+
+    @Query("SELECT strftime('%Y-%m', dateAt) AS month, SUM(amount) AS amount FROM Income GROUP BY month ORDER BY month")
+    fun getIncomesByMonth(): MutableList<ChartInfo>
 
 }
