@@ -54,7 +54,7 @@ class SpendActivity : AppCompatActivity() {
             false
         )
         Thread {
-            SmartFinanApplication.database.spendDao().addSpend(spend)
+            SmartFinanApplication.database.spendDao().upsertSpend(spend)
         }.start()
         navigateToMonthlySpends()
     }

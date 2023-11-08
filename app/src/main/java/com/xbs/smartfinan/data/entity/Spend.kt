@@ -15,6 +15,6 @@ data class Spend(
     val regularity: Regularity,
     val category: Category,
     val dateAt: String,
-    val checked: Boolean
+    var checked: Boolean = false
 ) {
 }

@@ -20,7 +20,7 @@ interface IncomeDao {
     @Query("SELECT * FROM Income")
     fun getAllIncomes(): MutableList<Income>
 
-    @Query("SELECT * FROM Income where dateAt BETWEEN :from AND :at")
+    @Query("SELECT * FROM Income where dateAt BETWEEN :from AND :at ORDER BY dateAt DESC")
     fun getIncomesByDate(from: String, at: String): MutableList<Income>
 
     @Query("SELECT * FROM Income where income_id = :id")

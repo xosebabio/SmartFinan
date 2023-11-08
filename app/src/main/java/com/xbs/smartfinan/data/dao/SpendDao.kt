@@ -2,9 +2,7 @@ package com.xbs.smartfinan.data.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
-import androidx.room.Insert
 import androidx.room.Query
-import androidx.room.Update
 import androidx.room.Upsert
 import com.xbs.smartfinan.data.entity.ChartInfo
 import com.xbs.smartfinan.data.entity.Spend
@@ -12,8 +10,12 @@ import com.xbs.smartfinan.data.entity.Spend
 @Dao
 interface SpendDao {
 
+
+    @Query("SELECT * FROM Spend")
+    fun getAllSpends(): MutableList<Spend>
+
     @Upsert
-    fun addSpend(spend: Spend)
+    fun upsertSpend(spend: Spend)
 
     @Delete
     fun deleteSpend(spend: Spend)

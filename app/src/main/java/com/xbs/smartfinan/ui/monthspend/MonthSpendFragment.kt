@@ -1,23 +1,19 @@
 package com.xbs.smartfinan.ui.monthspend
 
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.xbs.smartfinan.R
 import com.xbs.smartfinan.data.database.SmartFinanApplication
 import com.xbs.smartfinan.databinding.FragmentMonthSpendBinding
 import com.xbs.smartfinan.domain.OnClickListener
 import com.xbs.smartfinan.data.entity.Spend
 import com.xbs.smartfinan.domain.SpendAdapter
-import com.xbs.smartfinan.ui.income.IncomeActivity
 import com.xbs.smartfinan.ui.spend.SpendActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -164,4 +160,5 @@ class MonthSpendFragment : Fragment(), OnClickListener {
         calendar.add(Calendar.MONTH, 1)
         return calendar.get(Calendar.MONTH)
     }
+
 }

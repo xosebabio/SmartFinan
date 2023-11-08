@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import com.xbs.smartfinan.R
 import com.xbs.smartfinan.data.database.SmartFinanApplication
 import com.xbs.smartfinan.data.entity.Spend
 import com.xbs.smartfinan.databinding.ActivityEditDeleteSpendBinding
@@ -17,7 +16,6 @@ import com.xbs.smartfinan.domain.Regularity
 import com.xbs.smartfinan.ui.MainActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -117,7 +115,7 @@ class EditDeleteSpendActivity : AppCompatActivity(), CoroutineScope {
                 )
                 Log.d("UpdateSpend", "Updating spend: $spend")
                 launch(Dispatchers.IO) {
-                    SmartFinanApplication.database.spendDao().addSpend(spend)
+                    SmartFinanApplication.database.spendDao().upsertSpend(spend)
                     Log.d("UpdateSpend", "Spend updated")
                     withContext(Dispatchers.Main) {
                         navigateToMonthlySpends()

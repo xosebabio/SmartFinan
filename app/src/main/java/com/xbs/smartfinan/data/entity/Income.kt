@@ -12,5 +12,6 @@ data class Income(
     val amount: Double,
     val description: String,
     val regularity: Regularity,
-    val dateAt: String
+    val dateAt: String,
+    var checked: Boolean = false
 )
