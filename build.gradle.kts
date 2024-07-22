@@ -10,6 +10,6 @@ sonarqube {
         property("sonar.projectKey", "xosebabio_SmartFinan")
         property("sonar.organization", "xosebabio")
         property("sonar.host.url", "https://sonarcloud.io")
-        property("sonar.login", "440baa6c37ec49722d55985b816b6690b3487af2")
+        property("sonar.login", System.getenv("SONAR_TOKEN"))
     }
 }
