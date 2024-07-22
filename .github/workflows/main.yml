@@ -1,9 +1,11 @@
 name: CI
 on:
   push:
-    branches: [ master ]
+    branches:
+    - '**' # Escucha en todas las ramas
   pull_request:
-    branches: [ master ]
+    branches:
+    - '**' # Escucha en todas las ramas
   workflow_dispatch:
 
 jobs:
