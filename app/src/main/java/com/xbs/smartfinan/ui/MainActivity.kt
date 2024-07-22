@@ -29,8 +29,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var mActiveFragment: Fragment
     private lateinit var mFragmentManager: FragmentManager
-    private lateinit var spends: MutableList<Spend>
-    private lateinit var incomes: MutableList<Income>
     private lateinit var dateFormat: SimpleDateFormat
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -22,8 +22,8 @@
 
     <item
         android:id="@+id/action_profile"
-        android:title="@string/profile"
-        android:icon="@drawable/ic_profile"
+        android:title="@string/graphic"
+        android:icon="@drawable/ic_bar_chart"
         app:showAsAction="never"/>
 
 

@@ -1,34 +1,25 @@
 package com.xbs.smartfinan.ui.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.xbs.smartfinan.data.database.SmartFinanApplication
+import com.xbs.smartfinan.data.entity.ChartInfo
 import com.xbs.smartfinan.data.entity.Income
 import com.xbs.smartfinan.data.entity.Spend
 import com.xbs.smartfinan.databinding.FragmentMainScreenBinding
 import com.xbs.smartfinan.domain.Category
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlin.math.abs
 
 class MainScreenFragment : Fragment() {
     private var totalImportantSpends: Double = 0.0
     private var totalNotImportantSpends: Double = 0.0
     private var totalSpends: Double = 0.0
-
 
     private var totalMonthImportantSpends: Double = 0.0
     private var totalMonthNotImportantSpends: Double = 0.0
@@ -39,6 +30,14 @@ class MainScreenFragment : Fragment() {
 
     private val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private val calendar = Calendar.getInstance()
+
+    private val currentYear = getActualYear()
+
+    private val importantExpenses = mutableListOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+    private val nonImportantExpenses = mutableListOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+    private val savings = mutableListOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+    private val incomesList = mutableListOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
+
 
 
     private val spendDao = SmartFinanApplication.database.spendDao()
@@ -54,14 +53,77 @@ class MainScreenFragment : Fragment() {
     ): View {
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
         val date = calendar.time
-        MainScope().launch(Dispatchers.Main) {
-            calculateAmounts(date)
+//        MainScope().launch(Dispatchers.Main) {
+//            calculateAmounts(date)
+//            mBinding.tvRecomendation.text = calc()
+//        }
+
+        Thread {
+            val imSpends = SmartFinanApplication.database.spendDao()
+                .getSpendsByMonth(Category.NECESSARY.value.uppercase())
+            val nonImSpends = SmartFinanApplication.database.spendDao()
+                .getSpendsByMonth(Category.UNNECESSARY.value.uppercase())
+            val incomes = SmartFinanApplication.database.incomeDao().getIncomesByMonth()
+
+            activity?.runOnUiThread {
+                calculate(imSpends, nonImSpends, incomes, currentYear, importantExpenses, nonImportantExpenses, savings, incomesList)
+            }
+
+        }.start()
+
+        //mBinding.tvMonth.text = "Este mes " + getActualMonthName() + " has gastado:"
+        mBinding.tvMonth.text = "Este mes Diciembre has gastado:"
+        mBinding.tvYear.text = "Este año " + getActualYear() + " has gastado:"
+
+        return mBinding.root
+    }
+
+    private fun calculate(
+        imSpends: MutableList<ChartInfo>,
+        nonImSpends: MutableList<ChartInfo>,
+        incomes: MutableList<ChartInfo>,
+        year: String,
+        importantExpenses: MutableList<Float>,
+        nonImportantExpenses: MutableList<Float>,
+        savings: MutableList<Float>,
+        incomesList: MutableList<Float>
+    ) {
+
+        for (i in imSpends.indices) {
+            val month = imSpends[i].month.substring(5).toInt() - 1
+            if (imSpends[i].month.substring(0, 4) != year) {
+                continue
+            }
+            importantExpenses[month] = imSpends[i].amount.toFloat()
         }
 
-        mBinding.tvMonth.text = "Este mes " + getActualMonthName() + " has gastado:"
-        mBinding.tvYear.text = "Este año " + getActualYear() + " has gastado:"
-        mBinding.tvRecomendation.text = calc()
-        return mBinding.root
+        for (i in nonImSpends.indices) {
+            val month = nonImSpends[i].month.substring(5).toInt() - 1
+            if (nonImSpends[i].month.substring(0, 4) != year) {
+                continue
+            }
+            nonImportantExpenses[month] = nonImSpends[i].amount.toFloat()
+        }
+
+        for (i in incomes.indices) {
+            val month = incomes[i].month.substring(5).toInt() - 1
+            if (incomes[i].month.substring(0, 4) != year) {
+                continue
+            }
+            savings[month] =
+                incomes[i].amount.toFloat() - importantExpenses[month] - nonImportantExpenses[month]
+            incomesList[month] = incomes[i].amount.toFloat()
+        }
+
+        val monthNum = 11
+
+        val monthSpend = importantExpenses[monthNum]+nonImportantExpenses[monthNum]
+        val totalSpend = importantExpenses.sum()+nonImportantExpenses.sum()
+
+        mBinding.tvMonthSpend.text = ("%.2f".format(monthSpend)).toString() + "€"
+        mBinding.tvYearSpend.text = ("%.2f".format(totalSpend)).toString() + "€"
+
+        mBinding.tvRecomendation.text = calc(importantExpenses, nonImportantExpenses, savings, incomesList, monthNum)
     }
 
     private fun getActualYear(): String {
@@ -69,100 +131,110 @@ class MainScreenFragment : Fragment() {
         val dateFormat = SimpleDateFormat("yyyy", Locale("es", "ES"))
         return dateFormat.format(calendar.time)
     }
+//
+//    private suspend fun calculateAmounts(date: Date = Date()) = runBlocking {
+//        val importantSpendJob = GlobalScope.async(Dispatchers.IO) {
+//            getSpendSumAmount(
+//                spendDao.getSpendsBetweenDatesAndCategory(
+//                    getStartYear(date),
+//                    getEndYear(date),
+//                    Category.NECESSARY.value.uppercase()
+//                )
+//            )
+//        }
+//
+//        val notImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
+//            getSpendSumAmount(
+//                spendDao.getSpendsBetweenDatesAndCategory(
+//                    getStartYear(date),
+//                    getEndYear(date),
+//                    Category.UNNECESSARY.value.uppercase()
+//                )
+//            )
+//        }
+//
+//        val incomesJob = GlobalScope.async(Dispatchers.IO) {
+//            getIncomeSumAmount(incomeDao.getIncomesByDate(getStartYear(date), getEndYear(date)))
+//        }
+//
+//        val monthImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
+//            getSpendSumAmount(
+//                spendDao.getSpendsBetweenDatesAndCategory(
+//                    getStartMonth(date),
+//                    getEndMonth(date),
+//                    Category.NECESSARY.value.uppercase()
+//                )
+//            )
+//        }
+//
+//        val monthNotImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
+//            getSpendSumAmount(
+//                spendDao.getSpendsBetweenDatesAndCategory(
+//                    getStartMonth(date),
+//                    getEndMonth(date),
+//                    Category.UNNECESSARY.value.uppercase()
+//                )
+//            )
+//        }
+//
+//        val monthIncomesJob = GlobalScope.async(Dispatchers.IO) {
+//            getIncomeSumAmount(incomeDao.getIncomesByDate(getStartMonth(date), getEndMonth(date)))
+//        }
+//
+//        val results = awaitAll(
+//            importantSpendJob, notImportantSpendJob, incomesJob,
+//            monthImportantSpendJob, monthNotImportantSpendJob, monthIncomesJob
+//        )
+//
+//        totalImportantSpends = results[0]
+//        totalNotImportantSpends = results[1]
+//        totalIncomes = results[2]
+//        totalMonthImportantSpends = results[3]
+//        totalMonthNotImportantSpends = results[4]
+//        totalMonthIncomes = results[5]
+//
+//        totalSpends = totalImportantSpends + totalNotImportantSpends
+//        totalMonthSpends = totalMonthImportantSpends + totalMonthNotImportantSpends
+//
+//        mBinding.tvMonthSpend.text = totalMonthSpends.toString() + "€"
+//        mBinding.tvYearSpend.text = totalSpends.toString() + "€"
+//    }
 
-    private suspend fun calculateAmounts(date: Date = Date()) = runBlocking {
-        val importantSpendJob = GlobalScope.async(Dispatchers.IO) {
-            getSpendSumAmount(
-                spendDao.getSpendsBetweenDatesAndCategory(
-                    getStartYear(date),
-                    getEndYear(date),
-                    Category.NECESSARY.value.uppercase()
-                )
-            )
-        }
-
-        val notImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
-            getSpendSumAmount(
-                spendDao.getSpendsBetweenDatesAndCategory(
-                    getStartYear(date),
-                    getEndYear(date),
-                    Category.UNNECESSARY.value.uppercase()
-                )
-            )
-        }
-
-        val incomesJob = GlobalScope.async(Dispatchers.IO) {
-            getIncomeSumAmount(incomeDao.getIncomesByDate(getStartYear(date), getEndYear(date)))
-        }
-
-        val monthImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
-            getSpendSumAmount(
-                spendDao.getSpendsBetweenDatesAndCategory(
-                    getStartMonth(date),
-                    getEndMonth(date),
-                    Category.NECESSARY.value.uppercase()
-                )
-            )
-        }
-
-        val monthNotImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
-            getSpendSumAmount(
-                spendDao.getSpendsBetweenDatesAndCategory(
-                    getStartMonth(date),
-                    getEndMonth(date),
-                    Category.UNNECESSARY.value.uppercase()
-                )
-            )
-        }
-
-        val monthIncomesJob = GlobalScope.async(Dispatchers.IO) {
-            getIncomeSumAmount(incomeDao.getIncomesByDate(getStartMonth(date), getEndMonth(date)))
-        }
-
-        val results = awaitAll(
-            importantSpendJob, notImportantSpendJob, incomesJob,
-            monthImportantSpendJob, monthNotImportantSpendJob, monthIncomesJob
-        )
-
-        totalImportantSpends = results[0]
-        totalNotImportantSpends = results[1]
-        totalIncomes = results[2]
-        totalMonthImportantSpends = results[3]
-        totalMonthNotImportantSpends = results[4]
-        totalMonthIncomes = results[5]
-
-        totalSpends = totalImportantSpends + totalNotImportantSpends
-        totalMonthSpends = totalMonthImportantSpends + totalMonthNotImportantSpends
-
-        mBinding.tvMonthSpend.text = totalMonthSpends.toString() + "€"
-        mBinding.tvYearSpend.text = totalSpends.toString() + "€"
-    }
-
-    private fun calc(): String {
+    private fun calc(
+        importantExpenses: MutableList<Float>,
+        nonImportantExpenses: MutableList<Float>,
+        savings: MutableList<Float>,
+        incomesList: MutableList<Float>,
+        monthNum: Int
+    ): String {
         val stringBuilder = StringBuilder()
 
-        val importantSpendsPercentage = (totalImportantSpends / totalIncomes) * 100
-        val notImportantSpendsPercentage = (totalNotImportantSpends / totalIncomes) * 100
-        val monthImportantSpendsPercentage = (totalMonthImportantSpends / totalMonthIncomes) * 100
-        val monthNotImportantSpendsPercentage = (totalMonthNotImportantSpends / totalMonthIncomes) * 100
-        val monthSavingPercentage = ((totalMonthIncomes - totalMonthSpends) / totalMonthIncomes) * 100
+        val importantSpendsPercentage = (importantExpenses.sum() / incomesList.sum()) * 100
+        val notImportantSpendsPercentage = (nonImportantExpenses.sum() / incomesList.sum()) * 100
+        val monthImportantSpendsPercentage = (importantExpenses[monthNum] / incomesList[monthNum]) * 100
+        val monthNotImportantSpendsPercentage =
+            (nonImportantExpenses[monthNum] / incomesList[monthNum]) * 100
+        val monthSavingPercentage =
+            (savings[monthNum] / incomesList[monthNum]) * 100
 
         if (notImportantSpendsPercentage > 30.0) {
-            stringBuilder.append("Tienes demasiados gastos innecesarios. Este año te pasas en ${totalNotImportantSpends - (totalIncomes * 0.3)}€. ")
+            stringBuilder.append("Tienes demasiados gastos innecesarios. Este año te pasas en ${"%.2f".format(nonImportantExpenses.sum() - (incomesList.sum() * 0.3))}€. ")
         }
         if (importantSpendsPercentage > 50.0) {
-            stringBuilder.append("Tu nivel de vida es demasiado alto. Superas ${totalImportantSpends - (totalIncomes * 0.5)}€ en el estándar de ahorro recomendado durante este año. ")
+            stringBuilder.append("Tu nivel de vida es demasiado alto. Superas ${"%.2f".format(importantExpenses.sum() - (incomesList.sum() * 0.5))}€ en los gastos importantes recomendados durante este año. ")
         }
         if (monthNotImportantSpendsPercentage > 30.0) {
-            stringBuilder.append("Este mes has superado en ${totalMonthNotImportantSpends - (totalMonthIncomes * 0.3)}€ los gastos innecesarios recomendados. ")
+            stringBuilder.append("Este mes has superado en ${"%.2f".format(nonImportantExpenses[monthNum] - (incomesList[monthNum] * 0.3))}€ los gastos innecesarios recomendados. ")
         }
         if (monthImportantSpendsPercentage > 50.0) {
-            stringBuilder.append("Tus gastos importantes este mes superan en ${totalMonthImportantSpends - (totalMonthIncomes * 0.5)}€ a los recomendados, intenta reducirlos. ")
+            stringBuilder.append("Tus gastos importantes este mes superan en ${"%.2f".format(importantExpenses[monthNum] - (incomesList[monthNum] * 0.5))}€ a los recomendados, intenta reducirlos. ")
         }
 
-        if (monthSavingPercentage < 20.0) {
+        if (monthSavingPercentage < 20.0 && monthSavingPercentage > 0) {
             stringBuilder.append("Este mes has ahorrado ${monthSavingPercentage}% de tus ingresos, lo cual es menos del 20% recomendado. Intenta aumentar tus ahorros. ")
         }
+
+        stringBuilder.append("Este año has ahorrado ${"%.2f".format(savings.sum())}€")
 
         val advise = stringBuilder.toString()
 
@@ -172,7 +244,6 @@ class MainScreenFragment : Fragment() {
 
         return advise
     }
-
 
 
     private fun getStartMonth(date: Date): String {

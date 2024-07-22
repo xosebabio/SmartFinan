@@ -18,7 +18,13 @@ class SpendViewHolder(
         binding.tvSpendAmount.text = spend.amount.toString()
         binding.tvSpendDescription.text = spend.description
         binding.tvSpendDate.text = spend.dateAt
-        binding.tvSpendCategory.text = spend.category.toString()
+        if (spend.category.value==Category.NECESSARY.value) {
+            binding.tvSpendCategory.text = "Importante"
+            binding.tvSpendCategory.setTextColor(itemView.resources.getColor(android.R.color.holo_green_dark))
+        }else {
+            binding.tvSpendCategory.text = "Innecesario"
+            binding.tvSpendCategory.setTextColor(itemView.resources.getColor(android.R.color.holo_red_dark))
+        }
         itemView.setOnClickListener {
             itemClickListener(spend)
         }
