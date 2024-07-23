@@ -7,13 +7,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.xbs.smartfinan.data.database.SmartFinanApplication
 import com.xbs.smartfinan.data.entity.ChartInfo
-import com.xbs.smartfinan.data.entity.Income
-import com.xbs.smartfinan.data.entity.Spend
 import com.xbs.smartfinan.databinding.FragmentMainScreenBinding
 import com.xbs.smartfinan.domain.Category
 import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Date
 import java.util.Locale
 
 class MainScreenFragment : Fragment() {
@@ -44,7 +41,7 @@ class MainScreenFragment : Fragment() {
     private val incomeDao = SmartFinanApplication.database.incomeDao()
 
     private lateinit var _binding: FragmentMainScreenBinding
-    private val mBinding get() = _binding!!
+    private val mBinding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,11 +49,6 @@ class MainScreenFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMainScreenBinding.inflate(inflater, container, false)
-        val date = calendar.time
-//        MainScope().launch(Dispatchers.Main) {
-//            calculateAmounts(date)
-//            mBinding.tvRecomendation.text = calc()
-//        }
 
         Thread {
             val imSpends = SmartFinanApplication.database.spendDao()
@@ -131,80 +123,12 @@ class MainScreenFragment : Fragment() {
         val dateFormat = SimpleDateFormat("yyyy", Locale("es", "ES"))
         return dateFormat.format(calendar.time)
     }
-//
-//    private suspend fun calculateAmounts(date: Date = Date()) = runBlocking {
-//        val importantSpendJob = GlobalScope.async(Dispatchers.IO) {
-//            getSpendSumAmount(
-//                spendDao.getSpendsBetweenDatesAndCategory(
-//                    getStartYear(date),
-//                    getEndYear(date),
-//                    Category.NECESSARY.value.uppercase()
-//                )
-//            )
-//        }
-//
-//        val notImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
-//            getSpendSumAmount(
-//                spendDao.getSpendsBetweenDatesAndCategory(
-//                    getStartYear(date),
-//                    getEndYear(date),
-//                    Category.UNNECESSARY.value.uppercase()
-//                )
-//            )
-//        }
-//
-//        val incomesJob = GlobalScope.async(Dispatchers.IO) {
-//            getIncomeSumAmount(incomeDao.getIncomesByDate(getStartYear(date), getEndYear(date)))
-//        }
-//
-//        val monthImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
-//            getSpendSumAmount(
-//                spendDao.getSpendsBetweenDatesAndCategory(
-//                    getStartMonth(date),
-//                    getEndMonth(date),
-//                    Category.NECESSARY.value.uppercase()
-//                )
-//            )
-//        }
-//
-//        val monthNotImportantSpendJob = GlobalScope.async(Dispatchers.IO) {
-//            getSpendSumAmount(
-//                spendDao.getSpendsBetweenDatesAndCategory(
-//                    getStartMonth(date),
-//                    getEndMonth(date),
-//                    Category.UNNECESSARY.value.uppercase()
-//                )
-//            )
-//        }
-//
-//        val monthIncomesJob = GlobalScope.async(Dispatchers.IO) {
-//            getIncomeSumAmount(incomeDao.getIncomesByDate(getStartMonth(date), getEndMonth(date)))
-//        }
-//
-//        val results = awaitAll(
-//            importantSpendJob, notImportantSpendJob, incomesJob,
-//            monthImportantSpendJob, monthNotImportantSpendJob, monthIncomesJob
-//        )
-//
-//        totalImportantSpends = results[0]
-//        totalNotImportantSpends = results[1]
-//        totalIncomes = results[2]
-//        totalMonthImportantSpends = results[3]
-//        totalMonthNotImportantSpends = results[4]
-//        totalMonthIncomes = results[5]
-//
-//        totalSpends = totalImportantSpends + totalNotImportantSpends
-//        totalMonthSpends = totalMonthImportantSpends + totalMonthNotImportantSpends
-//
-//        mBinding.tvMonthSpend.text = totalMonthSpends.toString() + "€"
-//        mBinding.tvYearSpend.text = totalSpends.toString() + "€"
-//    }
 
     private fun calc(
-        importantExpenses: MutableList<Float>,
-        nonImportantExpenses: MutableList<Float>,
-        savings: MutableList<Float>,
-        incomesList: MutableList<Float>,
+        importantExpenses: List<Float>,
+        nonImportantExpenses: List<Float>,
+        savings: List<Float>,
+        incomesList: List<Float>,
         monthNum: Int
     ): String {
         val stringBuilder = StringBuilder()
@@ -243,55 +167,5 @@ class MainScreenFragment : Fragment() {
         }
 
         return advise
-    }
-
-
-    private fun getStartMonth(date: Date): String {
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        return dateFormat.format(calendar.time)
-    }
-
-    private fun getEndMonth(date: Date): String {
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        return dateFormat.format(calendar.time)
-    }
-
-    private fun getStartYear(date: Date): String {
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_YEAR, 1)
-        return dateFormat.format(calendar.time)
-    }
-
-    private fun getEndYear(date: Date): String {
-        calendar.time = date
-        calendar.set(Calendar.DAY_OF_YEAR, calendar.getActualMaximum(Calendar.DAY_OF_YEAR))
-        return dateFormat.format(calendar.time)
-    }
-
-    private fun getSpendSumAmount(spends: List<Spend>): Double {
-        var total = 0.0
-        for (spend in spends) {
-            total += spend.amount
-        }
-        return total
-    }
-
-    private fun getIncomeSumAmount(incomes: List<Income>): Double {
-        var total = 0.0
-        for (income in incomes) {
-            total += income.amount
-        }
-        return total
-    }
-
-
-    private fun getActualMonthName(): String {
-        val calendar = Calendar.getInstance()
-        val dateFormat = SimpleDateFormat("MMMM", Locale("es", "ES"))
-        var month: String = dateFormat.format(calendar.time)
-        month = month.substring(0, 1).uppercase() + month.substring(1)
-        return month
     }
 }
